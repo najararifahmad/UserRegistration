@@ -1,4 +1,10 @@
+using AutoMapper;
 using Microsoft.AspNetCore.ResponseCompression;
+using Microsoft.EntityFrameworkCore;
+using UserRegistration.Server;
+using UserRegistration.Shared;
+using UserRegistration.Shared.Implementations;
+using UserRegistration.Shared.Services;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -6,6 +12,18 @@ var builder = WebApplication.CreateBuilder(args);
 
 builder.Services.AddControllersWithViews();
 builder.Services.AddRazorPages();
+
+builder.Services.AddDbContext<ApplicationDbContext>(options =>
+{
+    options.UseSqlServer(builder.Configuration.GetConnectionString("ConnectionString"));
+    options.EnableSensitiveDataLogging();
+});
+
+IMapper mapper = MapperConfig.RegisterMaps().CreateMapper();
+builder.Services.AddSingleton(mapper);
+builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
+
+builder.Services.AddTransient<IUserRegistrationService, UserRegistrationImplementation>();
 
 var app = builder.Build();
 

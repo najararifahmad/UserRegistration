@@ -3,11 +3,11 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.7.34302.85
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "UserRegistration.Server", "UserRegistration\Server\UserRegistration.Server.csproj", "{6729C3F3-D24D-4903-ABA4-BA703C016A30}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "UserRegistration.Server", "UserRegistration\Server\UserRegistration.Server.csproj", "{6729C3F3-D24D-4903-ABA4-BA703C016A30}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "UserRegistration.Client", "UserRegistration\Client\UserRegistration.Client.csproj", "{CDDF481B-893E-4C51-B55A-10F948C7D3D1}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "UserRegistration.Client", "UserRegistration\Client\UserRegistration.Client.csproj", "{CDDF481B-893E-4C51-B55A-10F948C7D3D1}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "UserRegistration.Shared", "UserRegistration\Shared\UserRegistration.Shared.csproj", "{1975868D-C91A-4FDB-8D60-E95303539609}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "UserRegistration.Shared", "UserRegistration\Shared\UserRegistration.Shared.csproj", "{1975868D-C91A-4FDB-8D60-E95303539609}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

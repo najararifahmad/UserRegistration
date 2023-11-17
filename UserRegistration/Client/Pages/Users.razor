@@ -1,11 +1,15 @@
-﻿@page "/users"
+﻿@page "/users-list"
 @using UserRegistration.Shared.Models;
 @using UserRegistration.Shared;
 @inject IJSRuntime jsRuntime
 @inject NavigationManager navigationManager
 @inject HttpClient Http
 
-<h3>Users</h3>
+<h2>Users</h2>
+
+<h5>
+    <a href="add-user">Add New User</a>
+</h5>
 
 @if (users == null)
 {
@@ -15,92 +19,107 @@ else
 {
 
     
-    <table id="productsTable" class="table table-bordered table-hover table-striped"
-       style="width:100%;margin-top:20px">
-        <thead>
-            <tr>
-                <th>First Name</th>
-                <th>Last Name</th>
-                <th>Email</th>
-                <th></th>
-                <th></th>
-            </tr>
-        </thead>
-        <tbody>
-            @foreach (var user in users)
-            {
-                <tr>
-                    <td>@user.FirstName</td>
-                    <td>@user.LastName</td>
-                    <td>@user.Email</td>
-                    <td>
-                        <!-- Edit the current forecast -->
-                        <button class="btn btn-primary"
-                        @onclick="(() => EditUser(user.ID))">
-                            Edit
-                        </button>
-                    </td>
-                    <td>
-                        <!-- Edit the current forecast -->
-                        <button class="btn btn-danger"
-                        @onclick="(() => DeleteUser(user.ID))">
-                            Delete
-                        </button>
-                    </td>
-                </tr>
-            }
-        </tbody>
-        <tfoot>
-            <div style="position: absolute; right: 20px" class="text-muted">
-                <div style="display:inline-block; margin-right: 10px; margin-top: 10px; font-size: 10pt">
-                    Items Per Page:
-                </div>
-                <div style="display:inline-block;margin-right:30px;margin-top:10px;">
-                    <select class="text-muted"
-                        @onchange="PageSizeChanged">
-                        <option value="5" selected="selected">5</option>
-                        <option value="10" >10</option>
-                        <option value="20">20</option>
-                        <option value="50">50</option>
-                        <option value="100">100</option>
-                    </select>
-                </div>
-                <div style="display:inline-block; margin-right: 30px; margin-top: 10px; font-size: 10pt">
-                    @(pageNumber * pageSize + 1) - 
-                    @if(totalItems < pageSize) {
-                        <text>
-                            @totalItems
-                        </text>
+    <div class="row">
+        <div class="col-md-12">
+            <table id="productsTable" class="table table-bordered table-hover table-striped"
+                   >
+                <thead>
+                    <tr>
+                        <th>First Name</th>
+                        <th>Last Name</th>
+                        <th>Email</th>
+                        <th></th>
+                        <th></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @if (users.Count > 0)
+                    {
+                        @foreach (var user in users)
+                        {
+                            <tr>
+                                <td>@user.FirstName</td>
+                                <td>@user.LastName</td>
+                                <td>@user.Email</td>
+                                <td>
+                                    <!-- Edit the current forecast -->
+                                    <button class="btn btn-primary"
+                                    @onclick="(() => EditUser(user.ID))">
+                                        Edit
+                                    </button>
+                                </td>
+                                <td>
+                                    <!-- Edit the current forecast -->
+                                    <button class="btn btn-danger"
+                                    @onclick="(() => DeleteUser(user.ID))">
+                                        Delete
+                                    </button>
+                                </td>
+                            </tr>
+                        }
                     }
                     else
                     {
-                        @if (pageNumber * pageSize + pageSize < totalItems)
-                        {
-                            <text>
-                                @(pageNumber * pageSize + pageSize)
-                            </text>
-                        }
-                        else
-                        {
-                            <text>
-                                @totalItems
-                            </text>
-                        }
+                        <tr>
+                            <td colspan="5">
+                                <h6 class="text-center">No users found!</h6>
+                            </td>
+                        </tr>
                     }
-                    of @totalItems
-                </div>
-                <button class="btn btn-sm" @onclick="PreviousClicked"
-                    @attributes="previousButtonAttributes">
-                    <i class="oi oi-chevron-left" style="font-size: 10pt"></i>
-                </button>
-                
-                <button class="btn btn-sm" @onclick="NextClicked"
-                    @attributes="nextButtonAttributes">
-                    <i class="oi oi-chevron-right" style="font-size: 10pt"></i>
-                </button>
-            </div>
-        </tfoot>
-    </table>
+                </tbody>
+                <tfoot>
+                    <div class="row text-muted ">
+                        <div class="col-md-12" style="margin-left: 80%">
+                            Items Per Page:
+                            <select class="text-muted"
+                            @onchange="PageSizeChanged">
+                                <option value="5" selected="selected">5</option>
+                                <option value="10">10</option>
+                                <option value="20">20</option>
+                                <option value="50">50</option>
+                                <option value="100">100</option>
+                            </select>
+
+                            @(pageNumber * pageSize + 1) -
+                            @if (totalItems < pageSize)
+                            {
+                                <text>
+                                    @totalItems
+                                </text>
+                            }
+                            else
+                            {
+                                @if (pageNumber * pageSize + pageSize < totalItems)
+                                {
+                                    <text>
+                                        @(pageNumber * pageSize + pageSize)
+                                    </text>
+                                }
+                                else
+                                {
+                                    <text>
+                                        @totalItems
+                                    </text>
+                                }
+                            }
+                            of @totalItems
+
+                            <button class="btn btn-sm" @onclick="PreviousClicked"
+                            @attributes="previousButtonAttributes">
+                                <i class="oi oi-chevron-left" style="font-size: 10pt"></i>
+                            </button>
+
+                            <button class="btn btn-sm" @onclick="NextClicked"
+                            @attributes="nextButtonAttributes">
+                                <i class="oi oi-chevron-right" style="font-size: 10pt"></i>
+                            </button>
+                        </div>
+
+                    </div>
+                </tfoot>
+            </table>
+        </div>
+    </div>
 }
 
 
@@ -131,8 +150,9 @@ else
     {
         await jsRuntime.InvokeVoidAsync("showLoader", null);
 
-        var usersData = await Http.GetFromJsonAsync<ResponseDto>("Users");
-        users = (List<User>)usersData!.Data!;
+        var usersData = await Http.GetFromJsonAsync<ResponseDto>("Users/Get?pageNo=" + pageNumber +
+        "&pageSize=" + pageSize);
+        users = (List<User>)usersData!.Users!;
         totalItems = usersData.TotalItems;
 
         await jsRuntime.InvokeVoidAsync("hideLoader", null);
@@ -183,11 +203,11 @@ else
         if (canDelete)
         {
             await jsRuntime.InvokeVoidAsync("showLoader", null);
-            var result = await Http.GetFromJsonAsync<ResponseDto>($"Users/DeleteUser/{id}");
+            var result = await Http.DeleteFromJsonAsync<ResponseDto>($"users/delete/{id}");
             await jsRuntime.InvokeVoidAsync("hideLoader", null);
             if (result!.IsSuccess)
             {
-                await jsRuntime.InvokeVoidAsync("showSwal", "User deleted successfully.", true);
+                await jsRuntime.InvokeVoidAsync("showSwal", result.Message, true);
                 await GetUsersAsync();
             }
         }

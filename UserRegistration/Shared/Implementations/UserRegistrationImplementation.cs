@@ -50,7 +50,7 @@ namespace UserRegistration.Shared.Implementations
                 {
                     return new ResponseDto
                     {
-                        IsSuccess = true,
+                        IsSuccess = false,
                         Message = "User not found. Please try again...",
                     };
                 }
@@ -60,8 +60,38 @@ namespace UserRegistration.Shared.Implementations
 
                 return new ResponseDto
                 {
-                    IsSuccess = false,
+                    IsSuccess = true,
                     Message = "User deleted successfully."
+                };
+            }
+            catch(Exception ex)
+            {
+                return new ResponseDto
+                {
+                    IsSuccess = false,
+                    Message = "Error occured. Please try again..."
+                };
+            }
+        }
+
+        public async Task<ResponseDto> GetUserByIdAsync(int id)
+        {
+            try
+            {
+                var userInDb = await _context.Users.AsQueryable<User>().FirstOrDefaultAsync(u => u.ID == id);
+                if(userInDb != null)
+                {
+                    return new ResponseDto
+                    {
+                        IsSuccess = true,
+                        Message = "User found.",
+                        Users = new List<User>(new[] { userInDb })
+                    };
+                }
+                return new ResponseDto
+                {
+                    IsSuccess = false,
+                    Message = "User not found."
                 };
             }
             catch(Exception ex)
@@ -78,10 +108,10 @@ namespace UserRegistration.Shared.Implementations
         {
             try
             {
-                var usersInDb = await _context.Users.AsQueryable()
+                var usersInDb = await _context.Users.AsQueryable<User>()
                     .Skip(pageNo * pageSize).Take(pageSize).ToListAsync();
 
-                var totalItems = await _context.Users.AsQueryable().CountAsync();
+                var totalItems = await _context.Users.CountAsync();
 
                 if(usersInDb != null)
                 {
@@ -89,7 +119,7 @@ namespace UserRegistration.Shared.Implementations
                     {
                         IsSuccess = true,
                         Message = "Returning Users with given page no. and page size",
-                        Data = usersInDb,
+                        Users = usersInDb,
                         TotalItems = totalItems
                     };
                 }

@@ -5,7 +5,7 @@ using UserRegistration.Shared.Services;
 
 namespace UserRegistration.Server.Controllers
 {
-    [Route("api/[controller]")]
+    [Route("[controller]/[action]")]
     [ApiController]
     public class UsersController : ControllerBase
     {
@@ -14,8 +14,21 @@ namespace UserRegistration.Server.Controllers
         {
             _userRegistrationService = userRegistrationService;
         }
+        [HttpGet("{id}")]
+        public async Task<IActionResult> Get(int id)
+        {
+            try
+            {
+                return Ok(await _userRegistrationService.GetUserByIdAsync(id));
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
+        }
+
         [HttpGet]
-        public async Task<IActionResult> GetUsersAsync(int pageNo, int pageSize)
+        public async Task<IActionResult> Get(int pageNo, int pageSize)
         {
             try
             {
@@ -26,8 +39,9 @@ namespace UserRegistration.Server.Controllers
                 return BadRequest(ex.Message);
             }
         }
+        
         [HttpPost]
-        public async Task<IActionResult> AddUserAsync(User user)
+        public async Task<IActionResult> Post(User user)
         {
             try
             {
@@ -39,7 +53,7 @@ namespace UserRegistration.Server.Controllers
             }
         }
         [HttpPut]
-        public async Task<IActionResult> UpdateUserAsync(User user)
+        public async Task<IActionResult> Put(User user)
         {
             try
             {
@@ -50,9 +64,8 @@ namespace UserRegistration.Server.Controllers
                 return BadRequest(ex.Message);
             }
         }
-        [HttpDelete]
-        [Route("{id}")]
-        public async Task<IActionResult> DeleteUserAsync(int id)
+        [HttpDelete("{id}")]
+        public async Task<IActionResult> Delete(int id)
         {
             try
             {
